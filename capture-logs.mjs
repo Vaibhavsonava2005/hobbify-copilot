@@ -1,36 +1,31 @@
 import { spawn } from 'child_process';
 
-
 async function run() {
-  console.log("Starting vercel logs...");
-  const logsProcess = spawn('npx.cmd', ['vercel', 'logs', 'hobbyfi-copilot-alpha.vercel.app'], {
-    shell: true
+  const logsProcess = spawn('npx.cmd', ['vercel', 'logs', 'hobbyfi-copilot-alpha.vercel.app', '--output', 'raw'], {
+    shell: true,
+    stdio: ['pipe', 'pipe', 'pipe']
   });
   
-  logsProcess.stdout.on('data', (data) => {
-    console.log(`[VERCEL LOG]: ${data.toString()}`);
-  });
+  let output = '';
+  logsProcess.stdout.on('data', (data) => { output += data.toString(); console.log(data.toString()); });
+  logsProcess.stderr.on('data', (data) => { output += data.toString(); console.log(data.toString()); });
   
-  logsProcess.stderr.on('data', (data) => {
-    console.error(`[VERCEL ERR]: ${data.toString()}`);
-  });
-  
-  console.log("Waiting 5 seconds for stream to connect...");
   await new Promise(resolve => setTimeout(resolve, 5000));
   
-  console.log("Hitting the endpoint...");
+  // Hit the endpoint to trigger logs
+  console.log("\\n--- Hitting endpoint ---");
   try {
-    const res = await fetch('https://hobbyfi-copilot-alpha.vercel.app/api/copilot/chat', { method: 'POST' });
-    console.log(`Endpoint returned status: ${res.status}`);
+    const res = await fetch('https://hobbyfi-copilot-alpha.vercel.app/api/health');
+    console.log(`Status: ${res.status}`);
+    const text = await res.text();
+    console.log(`Body: ${text.substring(0, 500)}`);
   } catch (err) {
-    console.error("Endpoint hit failed:", err);
+    console.error("Fetch error:", err.message);
   }
   
-  console.log("Waiting 5 seconds to capture incoming logs...");
-  await new Promise(resolve => setTimeout(resolve, 5000));
-  
+  await new Promise(resolve => setTimeout(resolve, 10000));
   logsProcess.kill();
-  console.log("Done.");
+  console.log("\\n--- Done ---");
 }
 
 run();

@@ -1,8 +1,8 @@
 import { ollama } from 'ollama-ai-provider';
 import { Agent } from '@mastra/core/agent';
-import * as tools from '../tools';
+import * as tools from '../tools/index.js';
 
-import { env } from '../../config/env';
+import { env } from '../../config/env.js';
 
 export const copilotAgent = new Agent({
   name: 'HobbyFiCopilot',

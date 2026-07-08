@@ -1,9 +1,9 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { db } from '../../db';
-import { bookings } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { bookings } from '../../db/schema.js';
 import { eq, and } from 'drizzle-orm';
-import { approvalEngine } from '../../lib/approval-engine';
+import { approvalEngine } from '../../lib/approval-engine.js';
 
 export const listBookingsTool = createTool({
   id: 'list_bookings',

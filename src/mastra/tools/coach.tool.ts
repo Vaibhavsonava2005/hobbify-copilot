@@ -1,9 +1,9 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { db } from '../../db';
-import { coaches } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { coaches } from '../../db/schema.js';
 import { eq } from 'drizzle-orm';
-import { approvalEngine } from '../../lib/approval-engine';
+import { approvalEngine } from '../../lib/approval-engine.js';
 
 export const getTopCoachesTool = createTool({
   id: 'get_top_coaches',

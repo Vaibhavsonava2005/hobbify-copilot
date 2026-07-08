@@ -1,4 +1,4 @@
-export * from '../db/schema';
+export * from '../db/schema.js';
 
 export type ChatRequest = {
   vendorId: string;

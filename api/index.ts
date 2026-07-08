@@ -1,10 +1,10 @@
 import { handle } from 'hono/vercel';
 import { Hono } from 'hono';
-import { chatRouter } from '../src/api/routes/chat.route';
-import { approvalRouter } from '../src/api/routes/approval.route';
-import { auditRouter } from '../src/api/routes/audit.route';
-import { authMiddleware } from '../src/api/middleware/auth.middleware';
-import { rateLimitMiddleware } from '../src/api/middleware/rateLimit.middleware';
+import { chatRouter } from '../src/api/routes/chat.route.js';
+import { approvalRouter } from '../src/api/routes/approval.route.js';
+import { auditRouter } from '../src/api/routes/audit.route.js';
+import { authMiddleware } from '../src/api/middleware/auth.middleware.js';
+import { rateLimitMiddleware } from '../src/api/middleware/rateLimit.middleware.js';
 
 const app = new Hono().basePath('/api');
 

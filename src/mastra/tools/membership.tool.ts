@@ -1,9 +1,9 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { db } from '../../db';
-import { memberships } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { memberships } from '../../db/schema.js';
 import { eq, and, lte, gte } from 'drizzle-orm';
-import { approvalEngine } from '../../lib/approval-engine';
+import { approvalEngine } from '../../lib/approval-engine.js';
 
 export const updateMembershipTool = createTool({
   id: 'update_membership',

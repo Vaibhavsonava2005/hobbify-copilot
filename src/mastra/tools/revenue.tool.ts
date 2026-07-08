@@ -1,7 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { db } from '../../db';
-import { payments } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { payments } from '../../db/schema.js';
 import { eq, and, gte, lte, sum } from 'drizzle-orm';
 
 export const getRevenueTool = createTool({

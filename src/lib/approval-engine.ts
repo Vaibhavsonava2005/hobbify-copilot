@@ -1,6 +1,6 @@
-import { db } from '../db';
-import { approval_requests } from '../db/schema';
-import { ApprovalPayload } from '../types';
+import { db } from '../db/index.js';
+import { approval_requests } from '../db/schema.js';
+import { ApprovalPayload } from '../types/index.js';
 
 export const approvalEngine = {
   createRequest: async (vendorId: string, action: string, payload: any, summary: string): Promise<ApprovalPayload> => {

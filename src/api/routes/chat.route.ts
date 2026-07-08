@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
-import { mastra } from '../../mastra';
-import { db } from '../../db';
-import { ai_conversations } from '../../db/schema';
+import { mastra } from '../../mastra/index.js';
+import { db } from '../../db/index.js';
+import { ai_conversations } from '../../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 

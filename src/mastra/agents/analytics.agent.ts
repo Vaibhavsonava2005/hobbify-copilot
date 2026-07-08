@@ -1,6 +1,6 @@
 import { ollama } from 'ollama-ai-provider';
 import { Agent } from '@mastra/core/agent';
-import * as tools from '../tools';
+import * as tools from '../tools/index.js';
 
 export const analyticsAgent = new Agent({
   name: 'AnalyticsAgent',

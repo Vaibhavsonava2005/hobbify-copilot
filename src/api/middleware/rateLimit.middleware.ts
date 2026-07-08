@@ -1,5 +1,5 @@
 import { Context, Next } from 'hono';
-import { redis } from '../../lib/redis';
+import { redis } from '../../lib/redis.js';
 
 export const rateLimitMiddleware = async (c: Context, next: Next) => {
   const ip = c.req.header('x-forwarded-for') || '127.0.0.1';

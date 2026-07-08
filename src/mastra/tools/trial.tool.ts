@@ -1,9 +1,9 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { db } from '../../db';
-import { trials } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { trials } from '../../db/schema.js';
 import { eq } from 'drizzle-orm';
-import { approvalEngine } from '../../lib/approval-engine';
+import { approvalEngine } from '../../lib/approval-engine.js';
 
 export const getTrialUsersTool = createTool({
   id: 'get_trial_users',

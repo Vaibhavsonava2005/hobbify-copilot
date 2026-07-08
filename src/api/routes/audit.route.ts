@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { db } from '../../db';
-import { audit_logs } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { audit_logs } from '../../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
 
 const auditRouter = new Hono();

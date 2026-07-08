@@ -1,5 +1,5 @@
-import { db } from '../db';
-import { audit_logs } from '../db/schema';
+import { db } from '../db/index.js';
+import { audit_logs } from '../db/schema.js';
 
 export const auditLogger = {
   log: async (vendorId: string, action: string, resourceType: string, resourceId: string, details?: any) => {

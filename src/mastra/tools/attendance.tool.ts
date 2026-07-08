@@ -1,9 +1,9 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { db } from '../../db';
-import { attendance } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { attendance } from '../../db/schema.js';
 import { eq, and, gte, lte } from 'drizzle-orm';
-import { approvalEngine } from '../../lib/approval-engine';
+import { approvalEngine } from '../../lib/approval-engine.js';
 
 export const getAttendanceTool = createTool({
   id: 'get_attendance',

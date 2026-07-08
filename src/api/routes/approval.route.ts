@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
-import { db } from '../../db';
-import { approval_requests } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { approval_requests } from '../../db/schema.js';
 import { eq } from 'drizzle-orm';
-import { auditLogger } from '../../lib/audit-logger';
+import { auditLogger } from '../../lib/audit-logger.js';
 
 const approvalRouter = new Hono();
 

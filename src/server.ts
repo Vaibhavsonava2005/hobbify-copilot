@@ -1,12 +1,12 @@
 import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
-import { chatRouter } from './api/routes/chat.route';
-import { approvalRouter } from './api/routes/approval.route';
-import { auditRouter } from './api/routes/audit.route';
-import { authMiddleware } from './api/middleware/auth.middleware';
-import { rateLimitMiddleware } from './api/middleware/rateLimit.middleware';
-import { env } from './config/env';
+import { chatRouter } from './api/routes/chat.route.js';
+import { approvalRouter } from './api/routes/approval.route.js';
+import { auditRouter } from './api/routes/audit.route.js';
+import { authMiddleware } from './api/middleware/auth.middleware.js';
+import { rateLimitMiddleware } from './api/middleware/rateLimit.middleware.js';
+import { env } from './config/env.js';
 
 const app = new Hono();
 

@@ -1,5 +1,5 @@
-import { db } from './index';
-import * as schema from './schema';
+import { db } from './index.js';
+import * as schema from './schema.js';
 
 async function seed() {
   console.log('Seeding database with realistic Indian data...');

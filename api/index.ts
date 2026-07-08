@@ -1,6 +1,8 @@
 import { handle } from 'hono/vercel';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 // ═══════════════════════════════════════════════════════════════
 // LIGHTWEIGHT VERCEL SERVERLESS FUNCTION
@@ -42,6 +44,34 @@ app.use('*', async (c, next) => {
     return c.json({ error: 'Too many requests' }, 429);
   }
   await next();
+});
+
+// ─── Static UI Files ───────────────────────────────────────────
+app.get('/', (c) => {
+  try {
+    const html = readFileSync(join(process.cwd(), 'index.html'), 'utf-8');
+    return c.html(html);
+  } catch (e) {
+    return c.text('UI not found', 404);
+  }
+});
+
+app.get('/style.css', (c) => {
+  try {
+    const css = readFileSync(join(process.cwd(), 'style.css'), 'utf-8');
+    return new Response(css, { headers: { 'Content-Type': 'text/css' } });
+  } catch (e) {
+    return c.text('', 404);
+  }
+});
+
+app.get('/app.js', (c) => {
+  try {
+    const js = readFileSync(join(process.cwd(), 'app.js'), 'utf-8');
+    return new Response(js, { headers: { 'Content-Type': 'application/javascript' } });
+  } catch (e) {
+    return c.text('', 404);
+  }
 });
 
 // ─── Health Check ─────────────────────────────────────────────

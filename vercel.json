@@ -1,14 +1,13 @@
 {
   "version": 2,
-  "buildCommand": "echo done",
   "functions": {
     "api/index.ts": {
-      "includeFiles": "api/**"
+      "includeFiles": ["api/**", "index.html", "style.css", "app.js"]
     }
   },
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "destination": "/api/index.ts"
     }
   ]

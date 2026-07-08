@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/index.ts": {
-      "includeFiles": ["api/**", "index.html", "style.css", "app.js"]
+      "includeFiles": "{api/**,index.html,style.css,app.js}"
     }
   },
   "rewrites": [

@@ -1,8 +1,6 @@
 {
   "version": 2,
   "buildCommand": "echo done",
-  "installCommand": "npm install",
-  "outputDirectory": "public",
   "functions": {
     "api/index.ts": {
       "includeFiles": "api/**"
@@ -12,6 +10,10 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/index.ts"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/public/$1"
     }
   ]
 }

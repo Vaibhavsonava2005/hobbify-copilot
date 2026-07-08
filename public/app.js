@@ -66,13 +66,35 @@ function appendUserMessage(text) {
     scrollToBottom();
 }
 
+// Simple markdown to HTML converter
+function renderMarkdown(text) {
+    return text
+        // Tables
+        .replace(/\|(.+)\|\n\|[-| :]+\|\n((?:\|.+\|\n?)*)/g, (match, header, rows) => {
+            const headers = header.split('|').map(h => h.trim()).filter(Boolean);
+            const headerHTML = headers.map(h => `<th>${h}</th>`).join('');
+            const rowsHTML = rows.trim().split('\n').map(row => {
+                const cells = row.split('|').map(c => c.trim()).filter(Boolean);
+                return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
+            }).join('');
+            return `<table class="ai-table"><thead><tr>${headerHTML}</tr></thead><tbody>${rowsHTML}</tbody></table>`;
+        })
+        // Bold
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        // Italic
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        // Line breaks
+        .replace(/\n/g, '<br>');
+}
+
 // Render an AI message
 function appendAIMessage(text, isHTML = false) {
     const msgDiv = document.createElement('div');
     msgDiv.className = 'message ai';
+    const rendered = isHTML ? text : renderMarkdown(text);
     msgDiv.innerHTML = `
         <div class="avatar bg-green-light text-primary"><i data-lucide="bot"></i></div>
-        <div class="bubble">${isHTML ? text : `<p>${escapeHTML(text)}</p>`}</div>
+        <div class="bubble">${rendered}</div>
     `;
     chatContainer.appendChild(msgDiv);
     lucide.createIcons();

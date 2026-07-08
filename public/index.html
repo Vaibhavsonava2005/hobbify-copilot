@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HobbyFi Vendor Copilot | Pro</title>
+    <!-- Use Inter Font as requested -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Add charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="light-theme">
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="activity" class="text-primary"></i>
+                <span>HobbyFi<span class="text-primary">.Pro</span></span>
+            </div>
+            <nav>
+                <a href="#" class="nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                <a href="#" class="nav-item"><i data-lucide="users"></i> Members</a>
+                <a href="#" class="nav-item"><i data-lucide="calendar"></i> Bookings</a>
+                <a href="#" class="nav-item"><i data-lucide="credit-card"></i> Passes</a>
+                <a href="#" class="nav-item"><i data-lucide="map-pin"></i> Courts</a>
+                <a href="#" class="nav-item"><i data-lucide="award"></i> Coaches</a>
+                <a href="#" class="nav-item"><i data-lucide="message-circle"></i> Community</a>
+                <a href="#" class="nav-item"><i data-lucide="bar-chart-2"></i> Analytics</a>
+                <a href="#" class="nav-item"><i data-lucide="bot"></i> AI Copilot</a>
+                <a href="#" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+            </nav>
+            <div class="vendor-profile">
+                <img src="https://i.pravatar.cc/150?img=11" alt="Profile">
+                <div class="profile-info">
+                    <h4>Smash Badminton</h4>
+                    <p>Vendor ID: v-101</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-nav">
+                <h2>Overview Dashboard</h2>
+                <div class="actions">
+                    <button class="btn-icon"><i data-lucide="moon"></i></button>
+                    <button class="btn-icon"><i data-lucide="bell"></i></button>
+                    <button class="btn-primary"><i data-lucide="plus"></i> Quick Action</button>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- Stats Cards -->
+                <div class="stat-card">
+                    <div class="stat-icon bg-green-light text-primary"><i data-lucide="indian-rupee"></i></div>
+                    <div class="stat-details">
+                        <p>Total Revenue</p>
+                        <h3>₹1,24,500</h3>
+                        <span class="trend positive"><i data-lucide="arrow-up-right"></i> +12% vs last month</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue-light text-secondary"><i data-lucide="calendar-check"></i></div>
+                    <div class="stat-details">
+                        <p>Today's Bookings</p>
+                        <h3>48</h3>
+                        <span class="trend neutral">Steady this week</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-orange-light text-warning"><i data-lucide="users"></i></div>
+                    <div class="stat-details">
+                        <p>Today's Attendance</p>
+                        <h3>120</h3>
+                        <span class="trend positive"><i data-lucide="arrow-up-right"></i> +5%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-red-light text-destructive"><i data-lucide="user-x"></i></div>
+                    <div class="stat-details">
+                        <p>Membership Renewals</p>
+                        <h3>12 Pending</h3>
+                        <span class="trend negative"><i data-lucide="arrow-down-right"></i> Action Needed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Activity -->
+            <div class="main-split-grid mt-6">
+                <div class="chart-section card">
+                    <div class="card-header">
+                        <h3>Venue Utilization</h3>
+                        <button class="btn-ghost">View All</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="utilizationChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="activity-section card">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-avatar bg-blue-light text-secondary">A</div>
+                            <div class="activity-text">
+                                <p><strong>Arjun Kumar</strong> booked Court 2</p>
+                                <span>10 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar bg-green-light text-primary">P</div>
+                            <div class="activity-text">
+                                <p><strong>Priya Singh</strong> renewed Gold Pass</p>
+                                <span>45 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar bg-orange-light text-warning">S</div>
+                            <div class="activity-text">
+                                <p><strong>Smash Community</strong> organized a tournament</p>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- AI Copilot Panel -->
+        <aside class="copilot-panel">
+            <div class="copilot-header">
+                <div class="copilot-title">
+                    <i data-lucide="bot" class="text-primary"></i>
+                    <h3>HobbyFi Copilot</h3>
+                </div>
+                <button class="btn-icon" title="Clear Chat" onclick="clearChat()"><i data-lucide="trash-2"></i></button>
+            </div>
+
+            <div class="chat-container" id="chat-container">
+                <div class="message ai">
+                    <div class="avatar bg-green-light text-primary"><i data-lucide="bot"></i></div>
+                    <div class="bubble">
+                        <p>Hi there! I am your HobbyFi Copilot powered by Mastra. How can I assist you with your academy today?</p>
+                        <div class="suggestions">
+                            <button onclick="fillPrompt('Show me today\\'s revenue summary')">Revenue Summary</button>
+                            <button onclick="fillPrompt('Which members have passes expiring this week?')">Expiring Passes</button>
+                            <button onclick="fillPrompt('Create a 20% discount coupon for Summer Fest')">Create Coupon</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form class="chat-input-form" id="chat-form">
+                <input type="text" id="chat-input" placeholder="Message Copilot..." autocomplete="off">
+                <button type="submit" id="send-btn"><i data-lucide="send"></i></button>
+            </form>
+        </aside>
+    </div>
+
+    <!-- Template for Approval Card -->
+    <template id="approval-card-template">
+        <div class="approval-card">
+            <div class="approval-header">
+                <div class="approval-icon-bg bg-orange-light text-warning">
+                    <i data-lucide="shield-alert"></i>
+                </div>
+                <div class="approval-title">
+                    <h4>Approval Required</h4>
+                    <span>Copilot Action</span>
+                </div>
+            </div>
+            <p class="approval-desc">The AI is attempting to perform a write operation.</p>
+            <div class="approval-details">
+                <!-- Details injected here -->
+            </div>
+            <div class="approval-actions">
+                <button class="btn-reject" onclick="handleApproval(this, false)">Decline</button>
+                <button class="btn-approve" onclick="handleApproval(this, true)">Approve Action</button>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

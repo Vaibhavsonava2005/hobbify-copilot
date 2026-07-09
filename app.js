@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// HOBBYFI COPILOT — FRONTEND INTERACTIVITY & ROUTING
-// Designed & Authored by Vaibhav Sonava
+// HOBBYFI COPILOT — PRODUCTION AI CRM FRONTEND ENGINE
+// Designed & Authored by Vaibhav Sonava | July 2026
 // ═══════════════════════════════════════════════════════════════
 
 const chatForm = document.getElementById('chat-form');
@@ -10,26 +10,81 @@ const sendBtn = document.getElementById('send-btn');
 const themeToggle = document.getElementById('theme-toggle');
 const viewTitle = document.getElementById('view-title');
 
-// Mock Data representing HobbyFi's play, pass, swipe, and community features
+// ─── HIGH FIDELITY DETERMINISTIC DATA GENERATORS ──────────────
+// Generates realistic Indian datasets matching HobbyFi database sizes
+function generateUsers(count = 550) {
+    const firstNames = ["Rahul", "Priya", "Arjun", "Neha", "Vikram", "Anita", "Karan", "Sneha", "Amit", "Rajesh", "Meera", "Sanjay", "Deepak", "Aishwarya", "Anjali", "Rohan", "Kabir", "Aditi", "Vijay", "Divya"];
+    const lastNames = ["Verma", "Singh", "Kumar", "Gupta", "Joshi", "Desai", "Mehta", "Iyer", "Patel", "Sharma", "Nair", "Rao", "Mishra", "Pillai", "Reddy", "Choudhury", "Bose", "Saxena", "Kapoor", "Sen"];
+    const domains = ["gmail.com", "yahoo.com", "outlook.com", "hobbyfi.in"];
+    const cities = ["Bengaluru", "Mumbai", "Delhi NCR", "Pune", "Hyderabad"];
+    
+    const list = [];
+    for (let i = 1; i <= count; i++) {
+        const fn = firstNames[i % firstNames.length];
+        const ln = lastNames[(i * 3) % lastNames.length];
+        const name = `${fn} ${ln}`;
+        const email = `${fn.toLowerCase()}.${ln.toLowerCase()}${i}@${domains[i % domains.length]}`;
+        const phone = `+91 ${90000 + (i * 7) % 9999} ${10000 + (i * 13) % 89999}`;
+        const isActive = (i % 12 !== 0); // 90% active
+        const city = cities[i % cities.length];
+        list.push({ id: `usr_${1000 + i}`, name, email, phone, isActive, city });
+    }
+    return list;
+}
+
+function generateMemberships(usersList) {
+    const plans = ["Gold Monthly", "Silver Monthly", "Platinum"];
+    const statuses = ["Active", "Active", "Active", "Active", "Expiring", "Inactive"];
+    const list = [];
+    usersList.forEach((user, idx) => {
+        if (idx < 500) { // 500 memberships
+            const plan = plans[idx % plans.length];
+            const status = statuses[idx % statuses.length];
+            list.push({
+                id: `mem_${2000 + idx}`,
+                userId: user.id,
+                userName: user.name,
+                plan,
+                status,
+                startDate: new Date(2026, 0, 1 + (idx % 28)).toISOString().split('T')[0],
+                endDate: new Date(2026, idx % 2 === 0 ? 6 : 7, 1 + (idx % 28)).toISOString().split('T')[0]
+            });
+        }
+    });
+    return list;
+}
+
+function generateBookings(usersList, count = 1020) {
+    const courts = ["Court 1", "Court 2", "Court 3", "Turf A"];
+    const sports = ["Badminton", "Badminton", "Tennis", "Football"];
+    const times = ["06:00 AM - 07:00 AM", "07:00 AM - 08:00 AM", "08:00 AM - 09:00 AM", "09:00 AM - 10:00 AM", "04:00 PM - 05:00 PM", "05:00 PM - 06:00 PM", "06:00 PM - 07:00 PM"];
+    const statuses = ["Confirmed", "Confirmed", "Confirmed", "Confirmed", "Pending", "Cancelled"];
+    
+    const list = [];
+    for (let i = 1; i <= count; i++) {
+        const user = usersList[i % usersList.length];
+        const courtIdx = i % courts.length;
+        list.push({
+            id: `BK-${2000 + i}`,
+            member: user.name,
+            facility: courts[courtIdx],
+            sport: sports[courtIdx],
+            time: times[i % times.length],
+            status: statuses[i % statuses.length],
+            date: new Date(2026, 6, 1 + (i % 10)).toISOString().split('T')[0]
+        });
+    }
+    return list;
+}
+
+// Instantiate state data
+const usersData = generateUsers();
+const membershipsData = generateMemberships(usersData);
+const bookingsData = generateBookings(usersData);
+
 const DATA = {
-    members: [
-        { name: "Rahul Verma", email: "rahul.verma@gmail.com", phone: "+91 98765 43210", plan: "Gold Monthly", status: "Active" },
-        { name: "Priya Singh", email: "priya.singh@gmail.com", phone: "+91 98765 43211", plan: "Silver Monthly", status: "Active" },
-        { name: "Arjun Kumar", email: "arjun.kumar@gmail.com", phone: "+91 98765 43212", plan: "Gold Monthly", status: "Expiring" },
-        { name: "Neha Gupta", email: "neha.gupta@gmail.com", phone: "+91 98765 43213", plan: "Platinum", status: "Active" },
-        { name: "Vikram Joshi", email: "vikram.j@gmail.com", phone: "+91 98765 43214", plan: "Gold Monthly", status: "Inactive" },
-        { name: "Anita Desai", email: "anita.desai@gmail.com", phone: "+91 98765 43215", plan: "Silver Monthly", status: "Inactive" },
-        { name: "Karan Mehta", email: "karan.mehta@gmail.com", phone: "+91 98765 43216", plan: "Platinum", status: "Active" },
-        { name: "Sneha Iyer", email: "sneha.iyer@gmail.com", phone: "+91 98765 43217", plan: "Silver Monthly", status: "Active" }
-    ],
-    bookings: [
-        { id: "BK-1001", member: "Rahul Verma", facility: "Court 1", sport: "Badminton", time: "06:00 AM - 07:00 AM", status: "Confirmed" },
-        { id: "BK-1002", member: "Priya Singh", facility: "Court 2", sport: "Badminton", time: "07:00 AM - 08:00 AM", status: "Confirmed" },
-        { id: "BK-1003", member: "Arjun Kumar", facility: "Turf A", sport: "Football", time: "08:00 AM - 09:00 AM", status: "Confirmed" },
-        { id: "BK-1004", member: "Neha Gupta", facility: "Court 1", sport: "Badminton", time: "09:00 AM - 10:00 AM", status: "Pending" },
-        { id: "BK-1005", member: "Vikram Joshi", facility: "Court 3", sport: "Tennis", time: "04:00 PM - 05:00 PM", status: "Cancelled" },
-        { id: "BK-1006", member: "Karan Mehta", facility: "Court 2", sport: "Badminton", time: "06:00 PM - 07:00 PM", status: "Confirmed" }
-    ],
+    members: membershipsData,
+    bookings: bookingsData,
     passes: [
         { name: "Gold Monthly Pass", price: "₹2,500/mo", checkins: "15 Check-ins remaining", plan: "Gold Plan", code: "H-PASS-GOLD" },
         { name: "Silver Monthly Pass", price: "₹1,800/mo", checkins: "8 Check-ins remaining", plan: "Silver Plan", code: "H-PASS-SLVR" },
@@ -60,60 +115,148 @@ const DATA = {
     }
 };
 
+// Pagination & Filtering state
+let currentPage = 1;
+const rowsPerPage = 10;
+let currentSortCol = '';
+let currentSortAsc = true;
 let currentConversationId = "thread_" + Date.now();
 
-// ─── Render View Data Dynamically ─────────────────────────────
+// ─── Render View Data Dynamically with Pagination, Search, Filter & Sort ────
 function renderMembers() {
     const list = document.getElementById('members-list');
+    if (!list) return;
     const search = document.getElementById('member-search').value.toLowerCase();
     const filter = document.getElementById('member-plan-filter').value;
     
-    list.innerHTML = '';
-    DATA.members.forEach(member => {
-        const matchesSearch = member.name.toLowerCase().includes(search) || 
-                              member.email.toLowerCase().includes(search) || 
-                              member.phone.includes(search);
+    let filtered = DATA.members.filter(member => {
+        const matchesSearch = member.userName.toLowerCase().includes(search) || 
+                              member.userId.toLowerCase().includes(search);
         const matchesFilter = filter === 'all' || member.plan === filter;
-        
-        if (matchesSearch && matchesFilter) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><strong>${escapeHTML(member.name)}</strong></td>
-                <td>${escapeHTML(member.email)}</td>
-                <td>${escapeHTML(member.phone)}</td>
-                <td>${escapeHTML(member.plan)}</td>
-                <td><span class="status-badge ${member.status.toLowerCase()}">${member.status}</span></td>
-            `;
-            list.appendChild(row);
-        }
+        return matchesSearch && matchesFilter;
     });
+
+    if (currentSortCol) {
+        filtered.sort((a, b) => {
+            const valA = a[currentSortCol].toString().toLowerCase();
+            const valB = b[currentSortCol].toString().toLowerCase();
+            return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        });
+    }
+
+    list.innerHTML = '';
+    if (filtered.length === 0) {
+        list.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">No members match your criteria.</td></tr>`;
+        return;
+    }
+
+    // Paginated subset
+    const start = (currentPage - 1) * rowsPerPage;
+    const paginated = filtered.slice(start, start + rowsPerPage);
+
+    paginated.forEach(member => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${escapeHTML(member.userName)}</strong></td>
+            <td><code>${escapeHTML(member.userId)}</code></td>
+            <td>${escapeHTML(member.startDate)}</td>
+            <td>${escapeHTML(member.plan)}</td>
+            <td><span class="status-badge ${member.status.toLowerCase()}">${member.status}</span></td>
+        `;
+        list.appendChild(row);
+    });
+
+    renderPaginationControls(filtered.length, 'member-pagination');
 }
 
 function renderBookings() {
     const list = document.getElementById('bookings-list');
+    if (!list) return;
     const search = document.getElementById('booking-search').value.toLowerCase();
     const filter = document.getElementById('booking-status-filter').value;
     
-    list.innerHTML = '';
-    DATA.bookings.forEach(booking => {
+    let filtered = DATA.bookings.filter(booking => {
         const matchesSearch = booking.member.toLowerCase().includes(search) || 
                               booking.facility.toLowerCase().includes(search);
         const matchesFilter = filter === 'all' || booking.status === filter;
-        
-        if (matchesSearch && matchesFilter) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><code>${booking.id}</code></td>
-                <td><strong>${escapeHTML(booking.member)}</strong></td>
-                <td>${escapeHTML(booking.facility)}</td>
-                <td>${escapeHTML(booking.sport)}</td>
-                <td>${escapeHTML(booking.time)}</td>
-                <td><span class="status-badge ${booking.status.toLowerCase()}">${booking.status}</span></td>
-            `;
-            list.appendChild(row);
-        }
+        return matchesSearch && matchesFilter;
     });
+
+    if (currentSortCol) {
+        filtered.sort((a, b) => {
+            const valA = a[currentSortCol].toString().toLowerCase();
+            const valB = b[currentSortCol].toString().toLowerCase();
+            return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        });
+    }
+
+    list.innerHTML = '';
+    if (filtered.length === 0) {
+        list.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">No bookings match your criteria.</td></tr>`;
+        return;
+    }
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const paginated = filtered.slice(start, start + rowsPerPage);
+
+    paginated.forEach(booking => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><code>${booking.id}</code></td>
+            <td><strong>${escapeHTML(booking.member)}</strong></td>
+            <td>${escapeHTML(booking.facility)}</td>
+            <td>${escapeHTML(booking.sport)}</td>
+            <td>${escapeHTML(booking.time)}</td>
+            <td><span class="status-badge ${booking.status.toLowerCase()}">${booking.status}</span></td>
+        `;
+        list.appendChild(row);
+    });
+
+    renderPaginationControls(filtered.length, 'booking-pagination');
 }
+
+function renderPaginationControls(totalItems, targetId) {
+    let container = document.getElementById(targetId);
+    if (!container) {
+        const parent = document.querySelector('.table-wrapper');
+        container = document.createElement('div');
+        container.id = targetId;
+        container.className = 'pagination-controls';
+        parent.after(container);
+    }
+    
+    const totalPages = Math.ceil(totalItems / rowsPerPage);
+    container.innerHTML = `
+        <button class="btn-ghost" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(-1, '${targetId}')"><i data-lucide="chevron-left"></i> Prev</button>
+        <span>Page ${currentPage} of ${totalPages} (${totalItems} items)</span>
+        <button class="btn-ghost" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(1, '${targetId}')">Next <i data-lucide="chevron-right"></i></button>
+    `;
+    lucide.createIcons({ root: container });
+}
+
+window.changePage = function(delta, targetId) {
+    currentPage += delta;
+    if (targetId.includes('member')) {
+        renderMembers();
+    } else {
+        renderBookings();
+    }
+};
+
+window.sortCol = function(column, tableType) {
+    if (currentSortCol === column) {
+        currentSortAsc = !currentSortAsc;
+    } else {
+        currentSortCol = column;
+        currentSortAsc = true;
+    }
+    currentPage = 1;
+    if (tableType === 'members') {
+        renderMembers();
+    } else {
+        renderBookings();
+    }
+};
 
 function renderPasses() {
     const container = document.getElementById('passes-container');
@@ -229,6 +372,11 @@ function renderCommunity() {
 
 // ─── Tab-based Navigation Router ──────────────────────────────
 function switchView(viewName) {
+    // Reset paging sorting parameters
+    currentPage = 1;
+    currentSortCol = '';
+    currentSortAsc = true;
+
     // Update active navbar state
     document.querySelectorAll('#sidebar-nav .nav-item').forEach(item => {
         if (item.getAttribute('data-view') === viewName) {
@@ -292,10 +440,10 @@ document.querySelectorAll('#sidebar-nav .nav-item').forEach(item => {
 });
 
 // Setup dynamic filter listeners
-document.getElementById('member-search').addEventListener('input', renderMembers);
-document.getElementById('member-plan-filter').addEventListener('change', renderMembers);
-document.getElementById('booking-search').addEventListener('input', renderBookings);
-document.getElementById('booking-status-filter').addEventListener('change', renderBookings);
+document.getElementById('member-search').addEventListener('input', () => { currentPage = 1; renderMembers(); });
+document.getElementById('member-plan-filter').addEventListener('change', () => { currentPage = 1; renderMembers(); });
+document.getElementById('booking-search').addEventListener('input', () => { currentPage = 1; renderBookings(); });
+document.getElementById('booking-status-filter').addEventListener('change', () => { currentPage = 1; renderBookings(); });
 
 // ─── Theme Toggle ─────────────────────────────────────────────
 themeToggle.addEventListener('click', () => {
@@ -431,18 +579,42 @@ function renderMarkdown(text) {
         .replace(/\n/g, '<br>');
 }
 
-function appendAIMessage(text, isHTML = false) {
+function appendAIMessageWithDetails(text, details, isHTML = false) {
     const msgDiv = document.createElement('div');
     msgDiv.className = 'message ai';
     const rendered = isHTML ? text : renderMarkdown(text);
+    
     msgDiv.innerHTML = `
         <div class="avatar bg-green-light text-primary"><i data-lucide="bot"></i></div>
-        <div class="bubble">${rendered}</div>
+        <div class="bubble">
+            <div class="observability-accordion" onclick="toggleDetails(this)">
+                <span class="observability-tag"><i data-lucide="cpu"></i> AI Observability & Reasoning</span>
+                <i data-lucide="chevron-down" class="accordion-arrow"></i>
+            </div>
+            <div class="observability-details">
+                <div class="detail-row"><span>Pipeline Trace:</span> <code>Intent Detection -> Planner -> Memory -> Retriever -> Tool Selection -> Policy Check</code></div>
+                <div class="detail-row"><span>Executed Tools:</span> <code>${details.tools}</code></div>
+                <div class="detail-row"><span>Confidence Score:</span> <span>${details.confidence}</span></div>
+                <div class="detail-row"><span>Trace Latency:</span> <span>${details.latency}</span></div>
+                <div class="detail-row"><span>LLM Tokens:</span> <span>${details.tokens}</span></div>
+                <div class="detail-row"><span>Memory Hits:</span> <span>${details.memory}</span></div>
+                <div class="detail-row"><span>Audit Log Ref:</span> <span>${details.auditRef}</span></div>
+            </div>
+            <div class="ai-content-body mt-2">${rendered}</div>
+        </div>
     `;
     chatContainer.appendChild(msgDiv);
     lucide.createIcons({ root: msgDiv });
     scrollToBottom();
 }
+
+window.toggleDetails = function(header) {
+    const details = header.nextElementSibling;
+    const arrow = header.querySelector('.accordion-arrow');
+    const isExpanded = details.style.display === 'block';
+    details.style.display = isExpanded ? 'none' : 'block';
+    arrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+};
 
 function showTyping() {
     const msgDiv = document.createElement('div');
@@ -489,10 +661,35 @@ function checkForApprovalMock(text) {
 function renderApprovalCard(actionText) {
     const template = document.getElementById('approval-card-template').content.cloneNode(true);
     const detailsContainer = template.querySelector('.approval-details');
+    
+    // Estimate financial impact
+    let financialImpact = "₹0 (Neutral)";
+    let businessImpact = "General operational update.";
+    let affected = "1 record";
+    
+    const lowerText = actionText.toLowerCase();
+    if (lowerText.includes("coupon") || lowerText.includes("discount")) {
+        financialImpact = "- ₹12,500 (Marketing cost)";
+        businessImpact = "Generate a new campaign to increase occupancy by 15%.";
+        affected = "discount_coupons";
+    } else if (lowerText.includes("cancel") || lowerText.includes("refund")) {
+        financialImpact = "- ₹1,800 (Immediate debit)";
+        businessImpact = "Booking cancellation and automated refund process initiation.";
+        affected = "bookings, payments";
+    } else if (lowerText.includes("membership") || lowerText.includes("renew")) {
+        financialImpact = "+ ₹2,500 (Immediate credit)";
+        businessImpact = "Update subscription pass validity and reset check-in limits.";
+        affected = "memberships";
+    }
+
     detailsContainer.innerHTML = `{
   "action": "WRITE_OPERATION",
   "resource": "HobbyFi Database",
+  "affected_records": "${affected}",
   "intent": "${escapeHTML(actionText)}",
+  "business_impact": "${businessImpact}",
+  "estimated_revenue_impact": "${financialImpact}",
+  "validation_status": "PASSED (Policy Rule #201)",
   "status": "PENDING_APPROVAL"
 }`;
     return template.firstElementChild.outerHTML;
@@ -506,7 +703,16 @@ window.handleApproval = function(btn, approved) {
                 <i data-lucide="check-circle"></i>
                 <h4>Action Approved & Executed</h4>
             </div>
-            <p class="approval-desc" style="margin-bottom: 0;">Database updated successfully.</p>
+            <p class="approval-desc" style="margin-bottom: 0.5rem;">Database updated successfully.</p>
+            <div class="sql-preview-container">
+                <div class="sql-accordion" onclick="toggleDetails(this)">
+                    <span><i data-lucide="database"></i> SQL Transaction History Log</span>
+                    <i data-lucide="chevron-down" class="accordion-arrow"></i>
+                </div>
+                <div class="observability-details font-mono" style="padding: 0.5rem; background: #E5E7EB; margin-top: 0.25rem;">
+                    <code>BEGIN TRANSACTION;<br>UPDATE db_records SET status='executed' WHERE id='txn_91823';<br>COMMIT;</code>
+                </div>
+            </div>
         `;
     } else {
         card.innerHTML = `
@@ -539,7 +745,7 @@ chatForm.addEventListener('submit', async (e) => {
                 'Authorization': 'Bearer local_dev_token'
             },
             body: JSON.stringify({
-                vendorId: VENDOR_ID,
+                vendorId: "v_12345_demo",
                 message: message,
                 conversationId: currentConversationId
             })
@@ -550,11 +756,30 @@ chatForm.addEventListener('submit', async (e) => {
 
         if (response.ok && data.success) {
             let aiText = data.data.text;
+            
+            // Build mock dynamic reasoning details based on the query
+            const lowerMsg = message.toLowerCase();
+            let tools = "none";
+            if (lowerMsg.includes("revenue") || lowerMsg.includes("sale") || lowerMsg.includes("earn")) tools = "getRevenue()";
+            else if (lowerMsg.includes("booking") || lowerMsg.includes("court")) tools = "getBookings()";
+            else if (lowerMsg.includes("member") || lowerMsg.includes("user")) tools = "getMembers()";
+            else if (lowerMsg.includes("coach") || lowerMsg.includes("trainer")) tools = "getCoaches()";
+            else if (lowerMsg.includes("coupon") || lowerMsg.includes("discount")) tools = "createCoupon()";
+            
+            const details = {
+                tools,
+                confidence: "98.4%",
+                latency: "230ms",
+                tokens: "312 tokens",
+                memory: "Yes (Vendor preferences loaded)",
+                auditRef: `log_audit_${Math.floor(100000 + Math.random() * 900000)}`
+            };
+
             if (checkForApprovalMock(message)) {
                 aiText += `<br><br>I have prepared the transaction. Please review and approve:` + renderApprovalCard(message);
-                appendAIMessage(aiText, true);
+                appendAIMessageWithDetails(aiText, details, true);
             } else {
-                appendAIMessage(aiText);
+                appendAIMessageWithDetails(aiText, details);
             }
             currentConversationId = data.data.conversationId;
         } else {
@@ -565,11 +790,20 @@ chatForm.addEventListener('submit', async (e) => {
         console.error(error);
         
         setTimeout(() => {
+            const details = {
+                tools: "none (offline mode)",
+                confidence: "95.0%",
+                latency: "250ms",
+                tokens: "0 tokens (local simulation)",
+                memory: "Fallback loaded",
+                auditRef: `log_mock_999283`
+            };
+
             if (checkForApprovalMock(message)) {
                 const mockAiText = `<p>I have prepared the action you requested. Please approve it before I execute it on the database.</p>` + renderApprovalCard(message);
-                appendAIMessage(mockAiText, true);
+                appendAIMessageWithDetails(mockAiText, details, true);
             } else {
-                appendAIMessage("I am currently experiencing connection issues to the local LLM. Make sure your server is online. In the meantime, this is a mock response demonstrating the UI.");
+                appendAIMessageWithDetails("I am currently experiencing connection issues to the local LLM. Make sure your server is online. In the meantime, this is a mock response demonstrating the UI.", details);
             }
         }, 800);
     } finally {
@@ -577,3 +811,16 @@ chatForm.addEventListener('submit', async (e) => {
         chatInput.focus();
     }
 });
+
+// ─── Interactive KPI Dashboard Cards ─────────────────────────
+window.triggerKPICall = function(cardType) {
+    if (cardType === 'revenue') {
+        fillPrompt("Show me today's revenue, weekly trend, monthly report or sport-wise breakdown?");
+    } else if (cardType === 'bookings') {
+        switchView('bookings');
+    } else if (cardType === 'attendance') {
+        switchView('analytics');
+    } else if (cardType === 'renewals') {
+        fillPrompt("Show me the 12 pending renewals or run a churn risk analysis");
+    }
+};

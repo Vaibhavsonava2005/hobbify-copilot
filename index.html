@@ -56,7 +56,7 @@
             <div id="view-dashboard" class="view-section active">
                 <div class="dashboard-grid">
                     <!-- Stats Cards -->
-                    <div class="stat-card cursor-pointer" onclick="switchView('analytics')">
+                    <div class="stat-card cursor-pointer" onclick="triggerKPICall('revenue')">
                         <div class="stat-icon bg-green-light text-primary"><i data-lucide="indian-rupee"></i></div>
                         <div class="stat-details">
                             <p>Total Revenue</p>
@@ -64,7 +64,7 @@
                             <span class="trend positive"><i data-lucide="arrow-up-right"></i> +12% vs last month</span>
                         </div>
                     </div>
-                    <div class="stat-card cursor-pointer" onclick="switchView('bookings')">
+                    <div class="stat-card cursor-pointer" onclick="triggerKPICall('bookings')">
                         <div class="stat-icon bg-blue-light text-secondary"><i data-lucide="calendar-check"></i></div>
                         <div class="stat-details">
                             <p>Today's Bookings</p>
@@ -72,7 +72,7 @@
                             <span class="trend neutral">Steady this week</span>
                         </div>
                     </div>
-                    <div class="stat-card cursor-pointer" onclick="switchView('members')">
+                    <div class="stat-card cursor-pointer" onclick="triggerKPICall('attendance')">
                         <div class="stat-icon bg-orange-light text-warning"><i data-lucide="users"></i></div>
                         <div class="stat-details">
                             <p>Today's Attendance</p>
@@ -80,7 +80,7 @@
                             <span class="trend positive"><i data-lucide="arrow-up-right"></i> +5%</span>
                         </div>
                     </div>
-                    <div class="stat-card cursor-pointer" onclick="switchView('passes')">
+                    <div class="stat-card cursor-pointer" onclick="triggerKPICall('renewals')">
                         <div class="stat-icon bg-red-light text-destructive"><i data-lucide="user-x"></i></div>
                         <div class="stat-details">
                             <p>Membership Renewals</p>
@@ -152,11 +152,11 @@
                         <table class="crm-table">
                             <thead>
                                 <tr>
-                                    <th>Member Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Membership Plan</th>
-                                    <th>Status</th>
+                                    <th onclick="sortCol('userName', 'members')" class="cursor-pointer">Member Name <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('userId', 'members')" class="cursor-pointer">Email / ID <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('startDate', 'members')" class="cursor-pointer">Start Date <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('plan', 'members')" class="cursor-pointer">Plan <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('status', 'members')" class="cursor-pointer">Status <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
                                 </tr>
                             </thead>
                             <tbody id="members-list">
@@ -186,12 +186,12 @@
                         <table class="crm-table">
                             <thead>
                                 <tr>
-                                    <th>Booking ID</th>
-                                    <th>Member</th>
-                                    <th>Facility</th>
-                                    <th>Sport</th>
-                                    <th>Time Slot</th>
-                                    <th>Status</th>
+                                    <th onclick="sortCol('id', 'bookings')" class="cursor-pointer">Booking ID <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('member', 'bookings')" class="cursor-pointer">Member <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('facility', 'bookings')" class="cursor-pointer">Facility <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('sport', 'bookings')" class="cursor-pointer">Sport <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('time', 'bookings')" class="cursor-pointer">Time Slot <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
+                                    <th onclick="sortCol('status', 'bookings')" class="cursor-pointer">Status <i data-lucide="arrow-up-down" style="width: 12px; height: 12px;"></i></th>
                                 </tr>
                             </thead>
                             <tbody id="bookings-list">

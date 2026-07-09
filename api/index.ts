@@ -5,17 +5,13 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // ═══════════════════════════════════════════════════════════════
-// LIGHTWEIGHT VERCEL SERVERLESS FUNCTION
-// Zero heavy dependencies — instant cold start
+// HOBBYFI COPILOT — VERCEL SERVERLESS FUNCTION
+// No basePath — routes ALL traffic (static + API) directly
 // ═══════════════════════════════════════════════════════════════
 
 function generateId() {
   return 'id_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
 }
-
-// ═══════════════════════════════════════════════════════════════
-// IN-MEMORY RATE LIMITER
-// ═══════════════════════════════════════════════════════════════
 
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
@@ -31,10 +27,10 @@ function checkRateLimit(ip: string): boolean {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// HONO APP + ROUTES
+// NO basePath — root-level Hono app handles everything
 // ═══════════════════════════════════════════════════════════════
 
-const app = new Hono().basePath('/api');
+const app = new Hono();
 
 app.use('*', cors());
 
@@ -46,36 +42,45 @@ app.use('*', async (c, next) => {
   await next();
 });
 
-// ─── Static UI Files ───────────────────────────────────────────
-app.get('/', (c) => {
-  try {
-    const html = readFileSync(join(process.cwd(), 'index.html'), 'utf-8');
-    return c.html(html);
-  } catch (e) {
-    return c.text('UI not found', 404);
+// ═══════════════════════════════════════════════════════════════
+// STATIC UI FILES — served from project root
+// ═══════════════════════════════════════════════════════════════
+
+function tryReadFile(filename: string): string | null {
+  const paths = [
+    join(process.cwd(), filename),
+    join(__dirname, '..', filename),
+    join(__dirname, filename),
+  ];
+  for (const p of paths) {
+    try { return readFileSync(p, 'utf-8'); } catch {}
   }
+  return null;
+}
+
+app.get('/', (c) => {
+  const html = tryReadFile('index.html');
+  if (html) return c.html(html);
+  return c.html('<html><body><h1>HobbyFi Copilot</h1><p>UI files not bundled. API is live at <a href="/api/health">/api/health</a></p></body></html>');
 });
 
 app.get('/style.css', (c) => {
-  try {
-    const css = readFileSync(join(process.cwd(), 'style.css'), 'utf-8');
-    return new Response(css, { headers: { 'Content-Type': 'text/css' } });
-  } catch (e) {
-    return c.text('', 404);
-  }
+  const css = tryReadFile('style.css');
+  if (css) return new Response(css, { headers: { 'Content-Type': 'text/css', 'Cache-Control': 'public, max-age=31536000' } });
+  return c.text('', 404);
 });
 
 app.get('/app.js', (c) => {
-  try {
-    const js = readFileSync(join(process.cwd(), 'app.js'), 'utf-8');
-    return new Response(js, { headers: { 'Content-Type': 'application/javascript' } });
-  } catch (e) {
-    return c.text('', 404);
-  }
+  const js = tryReadFile('app.js');
+  if (js) return new Response(js, { headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'public, max-age=31536000' } });
+  return c.text('', 404);
 });
 
-// ─── Health Check ─────────────────────────────────────────────
-app.get('/health', (c) => {
+// ═══════════════════════════════════════════════════════════════
+// API ROUTES — all under /api/ prefix
+// ═══════════════════════════════════════════════════════════════
+
+app.get('/api/health', (c) => {
   return c.json({
     status: 'ok',
     service: 'HobbyFi Copilot API',
@@ -86,8 +91,7 @@ app.get('/health', (c) => {
   });
 });
 
-// ─── Copilot Chat ─────────────────────────────────────────────
-app.post('/copilot/chat', async (c) => {
+app.post('/api/copilot/chat', async (c) => {
   try {
     const body = await c.req.json();
     const { vendorId, message, conversationId } = body;
@@ -133,33 +137,29 @@ app.post('/copilot/chat', async (c) => {
   }
 });
 
-// ─── Conversations ────────────────────────────────────────────
-app.get('/copilot/conversations/:vendorId', (c) => {
+app.get('/api/copilot/conversations/:vendorId', (c) => {
   return c.json({ success: true, data: [] });
 });
 
-// ─── Approval Routes ──────────────────────────────────────────
-app.post('/copilot/approve/:requestId', (c) => {
+app.post('/api/copilot/approve/:requestId', (c) => {
   const requestId = c.req.param('requestId');
   return c.json({ success: true, message: `Action ${requestId} approved successfully` });
 });
 
-app.post('/copilot/reject/:requestId', (c) => {
+app.post('/api/copilot/reject/:requestId', (c) => {
   const requestId = c.req.param('requestId');
   return c.json({ success: true, message: `Action ${requestId} rejected` });
 });
 
-app.get('/copilot/approvals/:vendorId', (c) => {
+app.get('/api/copilot/approvals/:vendorId', (c) => {
   return c.json({ success: true, data: [] });
 });
 
-// ─── Audit Logs ───────────────────────────────────────────────
-app.get('/copilot/logs/:vendorId', (c) => {
+app.get('/api/copilot/logs/:vendorId', (c) => {
   return c.json({ success: true, data: [] });
 });
 
-// ─── Dashboard Metrics ────────────────────────────────────────
-app.get('/metrics/overview/:vendorId', (c) => {
+app.get('/api/metrics/overview/:vendorId', (c) => {
   return c.json({
     success: true,
     data: {
@@ -174,21 +174,9 @@ app.get('/metrics/overview/:vendorId', (c) => {
   });
 });
 
-// ─── Catch-all ────────────────────────────────────────────────
-app.all('/*', (c) => {
-  return c.json({
-    error: 'Not found',
-    available_endpoints: [
-      'POST /api/copilot/chat',
-      'GET /api/copilot/conversations/:vendorId',
-      'POST /api/copilot/approve/:requestId',
-      'GET /api/copilot/approvals/:vendorId',
-      'GET /api/copilot/logs/:vendorId',
-      'GET /api/metrics/overview/:vendorId',
-      'GET /api/health',
-    ],
-  }, 404);
-});
+// ═══════════════════════════════════════════════════════════════
+// EXPORT — Named HTTP method exports for Vercel Web Standard
+// ═══════════════════════════════════════════════════════════════
 
 const handler = handle(app);
 export const GET = handler;
@@ -197,4 +185,3 @@ export const PUT = handler;
 export const PATCH = handler;
 export const DELETE = handler;
 export const OPTIONS = handler;
-

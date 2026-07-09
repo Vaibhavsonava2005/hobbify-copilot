@@ -1,13 +1,9 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.ts": {
-      "includeFiles": "{api/**,index.html,style.css,app.js}"
-    }
-  },
+  "buildCommand": "echo skip",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
       "destination": "/api/index.ts"
     }
   ]

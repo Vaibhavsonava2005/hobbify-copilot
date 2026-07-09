@@ -131,10 +131,10 @@ nav {
 .profile-info h4 { font-size: 0.875rem; font-weight: 600; }
 .profile-info p { font-size: 0.75rem; color: var(--text-muted); }
 
-/* Main Content */
 .main-content {
     padding: 2rem;
     overflow-y: auto;
+    min-width: 0;
 }
 
 .top-nav {
@@ -316,6 +316,8 @@ nav {
     border-left: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .copilot-header {
@@ -344,6 +346,7 @@ nav {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    min-height: 0;
 }
 
 .message {

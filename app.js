@@ -463,13 +463,25 @@ function renderMainCharts() {
     
     if (utilizationChartInstance) utilizationChartInstance.destroy();
     
+    // Calculate dynamic court utilization based on mock data length
+    const baseVal = Math.min(100, Math.floor(DATA.bookings.length / 12));
+    const dynamicData = [
+        Math.max(10, baseVal - 30),
+        Math.max(10, baseVal - 20),
+        Math.max(10, baseVal - 10),
+        Math.max(10, baseVal - 15),
+        Math.min(100, baseVal + 5),
+        Math.min(100, baseVal + 25),
+        Math.min(100, baseVal + 20)
+    ];
+
     utilizationChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [{
                 label: 'Court Utilization (%)',
-                data: [45, 50, 60, 55, 75, 95, 90],
+                data: dynamicData,
                 backgroundColor: '#10B981', // HobbyFi Green
                 borderRadius: 4
             }]
@@ -486,12 +498,22 @@ function renderAnalyticsCharts() {
     const revCtx = document.getElementById('revenueDistributionChart');
     if (revCtx) {
         if (revenueChartInstance) revenueChartInstance.destroy();
+        
+        // Calculate dynamic distribution
+        let b = 0, f = 0, t = 0;
+        DATA.bookings.forEach(bk => {
+            if (bk.sport === 'Badminton') b++;
+            if (bk.sport === 'Football') f++;
+            if (bk.sport === 'Tennis') t++;
+        });
+        const total = b + f + t || 1;
+        
         revenueChartInstance = new Chart(revCtx, {
             type: 'doughnut',
             data: {
                 labels: ['Badminton', 'Football', 'Tennis', 'Pass Check-ins'],
                 datasets: [{
-                    data: [68, 15, 10, 7],
+                    data: [Math.round((b/total)*80), Math.round((f/total)*80), Math.round((t/total)*80), 20],
                     backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444']
                 }]
             },
@@ -502,13 +524,25 @@ function renderAnalyticsCharts() {
     const peakCtx = document.getElementById('peakHourChart');
     if (peakCtx) {
         if (peakChartInstance) peakChartInstance.destroy();
+        
+        // Dynamic peak hours
+        const activeUsers = DATA.members.filter(m => m.status === 'Active').length;
+        const multiplier = activeUsers / 500;
+        
         peakChartInstance = new Chart(peakCtx, {
             type: 'line',
             data: {
                 labels: ['06:00 AM', '09:00 AM', '12:00 PM', '03:00 PM', '06:00 PM', '09:00 PM'],
                 datasets: [{
                     label: 'Hourly Visitors',
-                    data: [45, 20, 15, 30, 85, 90],
+                    data: [
+                        Math.round(45 * multiplier), 
+                        Math.round(20 * multiplier), 
+                        Math.round(15 * multiplier), 
+                        Math.round(30 * multiplier), 
+                        Math.round(85 * multiplier), 
+                        Math.round(90 * multiplier)
+                    ],
                     borderColor: '#3B82F6',
                     tension: 0.4,
                     fill: true,
@@ -584,6 +618,14 @@ function appendAIMessageWithDetails(text, details, isHTML = false) {
     msgDiv.className = 'message ai';
     const rendered = isHTML ? text : renderMarkdown(text);
     
+    // Quick Actions HTML
+    const quickActions = `
+        <div class="quick-actions" style="display: flex; gap: 0.5rem; margin-top: 0.75rem; opacity: 0; transition: opacity 0.3s; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">
+            <button class="btn-ghost" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;" onclick="navigator.clipboard.writeText('${text.replace(/'/g, "\\'").replace(/\n/g, " ")}'); alert('Copied to clipboard!')"><i data-lucide="copy" style="width: 12px; height: 12px;"></i> Copy</button>
+            <button class="btn-ghost" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;" onclick="alert('Report generated and downloaded successfully.')"><i data-lucide="download" style="width: 12px; height: 12px;"></i> Export</button>
+        </div>
+    `;
+    
     msgDiv.innerHTML = `
         <div class="avatar bg-green-light text-primary"><i data-lucide="bot"></i></div>
         <div class="bubble">
@@ -600,12 +642,40 @@ function appendAIMessageWithDetails(text, details, isHTML = false) {
                 <div class="detail-row"><span>Memory Hits:</span> <span>${details.memory}</span></div>
                 <div class="detail-row"><span>Audit Log Ref:</span> <span>${details.auditRef}</span></div>
             </div>
-            <div class="ai-content-body mt-2">${rendered}</div>
+            <div class="ai-content-body mt-2"></div>
+            ${quickActions}
         </div>
     `;
     chatContainer.appendChild(msgDiv);
     lucide.createIcons({ root: msgDiv });
     scrollToBottom();
+
+    // Streaming effect
+    const bodyContainer = msgDiv.querySelector('.ai-content-body');
+    const actionsContainer = msgDiv.querySelector('.quick-actions');
+    
+    if (isHTML) {
+        bodyContainer.innerHTML = rendered;
+        actionsContainer.style.opacity = '1';
+        lucide.createIcons({ root: bodyContainer });
+        scrollToBottom();
+    } else {
+        // Stream it block by block
+        let i = 0;
+        const chunkSize = 3;
+        const streamInterval = setInterval(() => {
+            i += chunkSize;
+            if (i > rendered.length) {
+                bodyContainer.innerHTML = rendered;
+                actionsContainer.style.opacity = '1';
+                lucide.createIcons({ root: bodyContainer });
+                clearInterval(streamInterval);
+            } else {
+                bodyContainer.innerHTML = rendered.substring(0, i) + '<span style="border-right: 2px solid var(--primary); display: inline-block; width: 2px;"></span>';
+            }
+            scrollToBottom();
+        }, 15);
+    }
 }
 
 window.toggleDetails = function(header) {

@@ -21,113 +21,282 @@
                 <i data-lucide="activity" class="text-primary"></i>
                 <span>HobbyFi<span class="text-primary">.Pro</span></span>
             </div>
-            <nav>
-                <a href="#" class="nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard</a>
-                <a href="#" class="nav-item"><i data-lucide="users"></i> Members</a>
-                <a href="#" class="nav-item"><i data-lucide="calendar"></i> Bookings</a>
-                <a href="#" class="nav-item"><i data-lucide="credit-card"></i> Passes</a>
-                <a href="#" class="nav-item"><i data-lucide="map-pin"></i> Courts</a>
-                <a href="#" class="nav-item"><i data-lucide="award"></i> Coaches</a>
-                <a href="#" class="nav-item"><i data-lucide="message-circle"></i> Community</a>
-                <a href="#" class="nav-item"><i data-lucide="bar-chart-2"></i> Analytics</a>
-                <a href="#" class="nav-item"><i data-lucide="bot"></i> AI Copilot</a>
-                <a href="#" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+            <nav id="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                <a href="#" class="nav-item" data-view="members"><i data-lucide="users"></i> Members</a>
+                <a href="#" class="nav-item" data-view="bookings"><i data-lucide="calendar"></i> Bookings</a>
+                <a href="#" class="nav-item" data-view="passes"><i data-lucide="credit-card"></i> Passes</a>
+                <a href="#" class="nav-item" data-view="courts"><i data-lucide="map-pin"></i> Courts</a>
+                <a href="#" class="nav-item" data-view="coaches"><i data-lucide="award"></i> Coaches</a>
+                <a href="#" class="nav-item" data-view="community"><i data-lucide="message-circle"></i> Community</a>
+                <a href="#" class="nav-item" data-view="analytics"><i data-lucide="bar-chart-2"></i> Analytics</a>
+                <a href="#" class="nav-item" data-view="settings"><i data-lucide="settings"></i> Settings</a>
             </nav>
             <div class="vendor-profile">
                 <img src="https://i.pravatar.cc/150?img=11" alt="Profile">
                 <div class="profile-info">
                     <h4>Smash Badminton</h4>
-                    <p>Vendor ID: v-101</p>
+                    <p>Vendor ID: v_12345_demo</p>
                 </div>
             </div>
         </aside>
 
         <!-- Main Content Area -->
-        <main class="main-content">
+        <main class="main-content" id="main-scroll-container">
             <header class="top-nav">
-                <h2>Overview Dashboard</h2>
+                <h2 id="view-title">Overview Dashboard</h2>
                 <div class="actions">
-                    <button class="btn-icon"><i data-lucide="moon"></i></button>
-                    <button class="btn-icon"><i data-lucide="bell"></i></button>
-                    <button class="btn-primary"><i data-lucide="plus"></i> Quick Action</button>
+                    <button class="btn-icon" id="theme-toggle" title="Toggle Dark/Light Mode"><i data-lucide="moon"></i></button>
+                    <button class="btn-icon" title="Notifications"><i data-lucide="bell"></i></button>
+                    <button class="btn-primary" id="quick-action-btn"><i data-lucide="plus"></i> Quick Action</button>
                 </div>
             </header>
 
-            <div class="dashboard-grid">
-                <!-- Stats Cards -->
-                <div class="stat-card">
-                    <div class="stat-icon bg-green-light text-primary"><i data-lucide="indian-rupee"></i></div>
-                    <div class="stat-details">
-                        <p>Total Revenue</p>
-                        <h3>₹1,24,500</h3>
-                        <span class="trend positive"><i data-lucide="arrow-up-right"></i> +12% vs last month</span>
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="view-section active">
+                <div class="dashboard-grid">
+                    <!-- Stats Cards -->
+                    <div class="stat-card cursor-pointer" onclick="switchView('analytics')">
+                        <div class="stat-icon bg-green-light text-primary"><i data-lucide="indian-rupee"></i></div>
+                        <div class="stat-details">
+                            <p>Total Revenue</p>
+                            <h3>₹1,24,500</h3>
+                            <span class="trend positive"><i data-lucide="arrow-up-right"></i> +12% vs last month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card cursor-pointer" onclick="switchView('bookings')">
+                        <div class="stat-icon bg-blue-light text-secondary"><i data-lucide="calendar-check"></i></div>
+                        <div class="stat-details">
+                            <p>Today's Bookings</p>
+                            <h3>48</h3>
+                            <span class="trend neutral">Steady this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card cursor-pointer" onclick="switchView('members')">
+                        <div class="stat-icon bg-orange-light text-warning"><i data-lucide="users"></i></div>
+                        <div class="stat-details">
+                            <p>Today's Attendance</p>
+                            <h3>120</h3>
+                            <span class="trend positive"><i data-lucide="arrow-up-right"></i> +5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card cursor-pointer" onclick="switchView('passes')">
+                        <div class="stat-icon bg-red-light text-destructive"><i data-lucide="user-x"></i></div>
+                        <div class="stat-details">
+                            <p>Membership Renewals</p>
+                            <h3>12 Pending</h3>
+                            <span class="trend negative"><i data-lucide="arrow-down-right"></i> Action Needed</span>
+                        </div>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-blue-light text-secondary"><i data-lucide="calendar-check"></i></div>
-                    <div class="stat-details">
-                        <p>Today's Bookings</p>
-                        <h3>48</h3>
-                        <span class="trend neutral">Steady this week</span>
+
+                <!-- Charts & Activity -->
+                <div class="main-split-grid mt-6">
+                    <div class="chart-section card">
+                        <div class="card-header">
+                            <h3>Venue Utilization</h3>
+                            <button class="btn-ghost" onclick="switchView('analytics')">View Details</button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="utilizationChart"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-orange-light text-warning"><i data-lucide="users"></i></div>
-                    <div class="stat-details">
-                        <p>Today's Attendance</p>
-                        <h3>120</h3>
-                        <span class="trend positive"><i data-lucide="arrow-up-right"></i> +5%</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-red-light text-destructive"><i data-lucide="user-x"></i></div>
-                    <div class="stat-details">
-                        <p>Membership Renewals</p>
-                        <h3>12 Pending</h3>
-                        <span class="trend negative"><i data-lucide="arrow-down-right"></i> Action Needed</span>
+
+                    <div class="activity-section card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-avatar bg-blue-light text-secondary"><i data-lucide="user"></i></div>
+                                <div class="activity-text">
+                                    <p><strong>Arjun Kumar</strong> booked Court 2</p>
+                                    <span>10 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar bg-green-light text-primary"><i data-lucide="credit-card"></i></div>
+                                <div class="activity-text">
+                                    <p><strong>Priya Singh</strong> renewed Gold Pass</p>
+                                    <span>45 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar bg-orange-light text-warning"><i data-lucide="message-square"></i></div>
+                                <div class="activity-text">
+                                    <p><strong>Smash Community</strong> organized a tournament</p>
+                                    <span>2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts & Activity -->
-            <div class="main-split-grid mt-6">
-                <div class="chart-section card">
-                    <div class="card-header">
-                        <h3>Venue Utilization</h3>
-                        <button class="btn-ghost">View All</button>
+            <!-- Members View -->
+            <div id="view-members" class="view-section">
+                <div class="card">
+                    <div class="card-header-flex">
+                        <h3>Active Members & Passes</h3>
+                        <div class="search-filter-row">
+                            <input type="text" id="member-search" class="search-input" placeholder="Search by name, phone or email...">
+                            <select id="member-plan-filter" class="select-filter">
+                                <option value="all">All Plans</option>
+                                <option value="Gold Monthly">Gold Monthly</option>
+                                <option value="Silver Monthly">Silver Monthly</option>
+                                <option value="Platinum">Platinum</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="utilizationChart"></canvas>
+                    <div class="table-wrapper">
+                        <table class="crm-table">
+                            <thead>
+                                <tr>
+                                    <th>Member Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Membership Plan</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="members-list">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                <div class="activity-section card">
-                    <div class="card-header">
-                        <h3>Recent Activity</h3>
-                    </div>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-avatar bg-blue-light text-secondary">A</div>
-                            <div class="activity-text">
-                                <p><strong>Arjun Kumar</strong> booked Court 2</p>
-                                <span>10 minutes ago</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar bg-green-light text-primary">P</div>
-                            <div class="activity-text">
-                                <p><strong>Priya Singh</strong> renewed Gold Pass</p>
-                                <span>45 minutes ago</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar bg-orange-light text-warning">S</div>
-                            <div class="activity-text">
-                                <p><strong>Smash Community</strong> organized a tournament</p>
-                                <span>2 hours ago</span>
-                            </div>
+            <!-- Bookings View -->
+            <div id="view-bookings" class="view-section">
+                <div class="card">
+                    <div class="card-header-flex">
+                        <h3>Court Bookings (Play pillar)</h3>
+                        <div class="search-filter-row">
+                            <input type="text" id="booking-search" class="search-input" placeholder="Search by member or court...">
+                            <select id="booking-status-filter" class="select-filter">
+                                <option value="all">All Statuses</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="table-wrapper">
+                        <table class="crm-table">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Member</th>
+                                    <th>Facility</th>
+                                    <th>Sport</th>
+                                    <th>Time Slot</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookings-list">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passes View -->
+            <div id="view-passes" class="view-section">
+                <div class="card">
+                    <div class="card-header-flex">
+                        <h3>HobbyPass Subscriptions</h3>
+                    </div>
+                    <div class="passes-grid mt-4" id="passes-container">
+                        <!-- Passes populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courts View -->
+            <div id="view-courts" class="view-section">
+                <div class="card">
+                    <div class="card-header-flex">
+                        <h3>Courts & Facilities</h3>
+                    </div>
+                    <div class="courts-grid mt-4" id="courts-container">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coaches View -->
+            <div id="view-coaches" class="view-section">
+                <div class="card">
+                    <div class="card-header-flex">
+                        <h3>Registered Coaches</h3>
+                    </div>
+                    <div class="coaches-grid mt-4" id="coaches-container">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community View -->
+            <div id="view-community" class="view-section">
+                <div class="main-split-grid">
+                    <div class="card">
+                        <h3>Active Groups & Matches</h3>
+                        <div class="activity-list mt-4" id="community-groups-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Social Swipe Buddy Matches</h3>
+                        <div class="activity-list mt-4" id="swipe-matches-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics View -->
+            <div id="view-analytics" class="view-section">
+                <div class="main-split-grid">
+                    <div class="card">
+                        <h3>Revenue Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="revenueDistributionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Peak Hour Traffic</h3>
+                        <div class="chart-container">
+                            <canvas id="peakHourChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div id="view-settings" class="view-section">
+                <div class="card max-w-md">
+                    <h3>HobbyFi Vendor Configurations</h3>
+                    <form class="settings-form mt-4" id="settings-form" onsubmit="event.preventDefault(); alert('Settings saved successfully!');">
+                        <div class="form-group">
+                            <label>Academy Name</label>
+                            <input type="text" class="search-input" value="Smash Badminton Academy" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Primary Sport</label>
+                            <input type="text" class="search-input" value="Badminton" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Academy Address</label>
+                            <input type="text" class="search-input" value="Indiranagar, Bengaluru, Karnataka" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Operating Hours</label>
+                            <input type="text" class="search-input" value="06:00 AM - 10:00 PM" required>
+                        </div>
+                        <button type="submit" class="btn-primary mt-4">Save Configuration</button>
+                    </form>
                 </div>
             </div>
         </main>
@@ -148,7 +317,7 @@
                     <div class="bubble">
                         <p>Hi there! I am your HobbyFi Copilot powered by Mastra. How can I assist you with your academy today?</p>
                         <div class="suggestions">
-                            <button onclick="fillPrompt('Show me today\\'s revenue summary')">Revenue Summary</button>
+                            <button onclick="fillPrompt('Show me today\'s revenue summary')">Revenue Summary</button>
                             <button onclick="fillPrompt('Which members have passes expiring this week?')">Expiring Passes</button>
                             <button onclick="fillPrompt('Create a 20% discount coupon for Summer Fest')">Create Coupon</button>
                         </div>

@@ -63,7 +63,7 @@ body {
 /* Layout */
 .app-container {
     display: grid;
-    grid-template-columns: 240px 1fr 380px;
+    grid-template-columns: 240px 1fr 480px;
     height: 100vh;
 }
 
@@ -578,6 +578,11 @@ nav {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(4px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 .card-header-flex {

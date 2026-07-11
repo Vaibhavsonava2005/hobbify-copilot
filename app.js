@@ -390,43 +390,47 @@ function switchView(viewName) {
     const formattedTitle = viewName.charAt(0).toUpperCase() + viewName.slice(1);
     viewTitle.textContent = viewName === 'dashboard' ? 'Overview Dashboard' : `${formattedTitle} Directory`;
 
-    // Toggle Section Visibility
+    // Toggle Section Visibility with Loading State Simulation
     document.querySelectorAll('.view-section').forEach(section => {
         if (section.id === `view-${viewName}`) {
             section.classList.add('active');
+            
+            // Framework-like suspense/loading state
+            const originalHTML = section.innerHTML;
+            section.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 1rem; padding: 2rem; opacity: 0.5;">
+                    <div style="height: 40px; width: 30%; background: var(--border-color); border-radius: 8px; animation: pulse 1.5s infinite;"></div>
+                    <div style="height: 200px; width: 100%; background: var(--border-color); border-radius: 8px; animation: pulse 1.5s infinite;"></div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                section.innerHTML = originalHTML;
+                
+                // Refresh charts if entering Dashboard or Analytics views
+                if (viewName === 'dashboard') {
+                    renderMainCharts();
+                } else if (viewName === 'analytics') {
+                    renderAnalyticsCharts();
+                }
+
+                // Populate data depending on view
+                switch(viewName) {
+                    case 'members': renderMembers(); break;
+                    case 'bookings': renderBookings(); break;
+                    case 'passes': renderPasses(); break;
+                    case 'courts': renderCourts(); break;
+                    case 'coaches': renderCoaches(); break;
+                    case 'community': renderCommunity(); break;
+                }
+                
+                lucide.createIcons({ root: section });
+            }, 300); // 300ms mock framework suspense
+            
         } else {
             section.classList.remove('active');
         }
     });
-
-    // Refresh charts if entering Dashboard or Analytics views
-    if (viewName === 'dashboard') {
-        renderMainCharts();
-    } else if (viewName === 'analytics') {
-        renderAnalyticsCharts();
-    }
-
-    // Populate data depending on view
-    switch(viewName) {
-        case 'members':
-            renderMembers();
-            break;
-        case 'bookings':
-            renderBookings();
-            break;
-        case 'passes':
-            renderPasses();
-            break;
-        case 'courts':
-            renderCourts();
-            break;
-        case 'coaches':
-            renderCoaches();
-            break;
-        case 'community':
-            renderCommunity();
-            break;
-    }
 }
 window.switchView = switchView;
 

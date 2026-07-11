@@ -305,10 +305,15 @@
         <aside class="copilot-panel">
             <div class="copilot-header">
                 <div class="copilot-title">
-                    <i data-lucide="bot" class="text-primary"></i>
-                    <h3>HobbyFi Copilot</h3>
+                    <div class="avatar bg-green-light text-primary" style="width: 32px; height: 32px;"><i data-lucide="bot"></i></div>
+                    <div>
+                        <h3 style="font-size: 1rem; margin-bottom: 2px;">HobbyFi Copilot</h3>
+                        <span style="font-size: 0.7rem; color: var(--primary); font-weight: 600;">Powered by Mastra & GPT-4</span>
+                    </div>
                 </div>
-                <button class="btn-icon" title="Clear Chat" onclick="clearChat()"><i data-lucide="trash-2"></i></button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn-ghost" title="Start New Chat" onclick="clearChat()" style="font-size: 0.8rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.25rem 0.5rem;"><i data-lucide="plus" style="width: 14px; height: 14px;"></i> New</button>
+                </div>
             </div>
 
             <div class="chat-container" id="chat-container">

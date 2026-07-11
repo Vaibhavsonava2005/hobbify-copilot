@@ -137,11 +137,56 @@ app.post('/api/copilot/chat', async (c) => {
     };
 
     const msgLower = message.toLowerCase();
-    let responseText = `I understand your query: "${message}"\n\nAs the HobbyFi Copilot, I can help you with:\n- 📊 **Revenue & Sales:** Analyze income, trends and projections.\n- 👥 **Member Directory:** Check active and inactive members.\n- 📅 **Court Bookings:** View active schedules, utilization, and peak traffic hours.\n- 🏸 **Coach Performance:** Performance records, ratings, and student counts.\n- 🎟️ **Coupons & Campaigns:** Create discount campaigns and track active offers.\n- 📋 **Pass & Membership Subscriptions:** Manage gold/silver passes and check-ins.\n- 🤝 **HobbySwipe social matchups:** See active matched pairs.\n- 💬 **Community Groups:** View local sports club metrics.\n\nTry asking about any of these topics!`;
+    
+    // Advanced NLP Intent Parsing (Simulated RAG & LLM)
+    const intents = [
+      {
+        pattern: /(revenue|sale|earn|income|profit|finance|money)/i,
+        response: `📊 **Financial & Revenue Analysis (Smash Badminton Academy)**\n\n| Metric | Amount | Trend |\n|--------|--------|-------|\n| **Today** | ₹8,500 | ↗️ +15% vs avg |\n| **This Week** | ₹42,300 | ↗️ +8% vs last |\n| **This Month** | ₹1,24,500 | ↗️ +12% vs last |\n\n💡 **AI Insight:** Your badminton courts are generating 68% of total revenue. Tennis is underperforming this month.\n\n### Suggested Actions:\n- Launch a targeted email campaign for Tennis players.\n- Offer a 10% discount on off-peak Tennis bookings.`
+      },
+      {
+        pattern: /(member|user|subscriber|customer|people)/i,
+        response: `👥 **Vendor Directory & Member Insights**\n\n- **Total Active Members:** 245\n- **Expiring This Week:** 12 members\n- **New Signups This Month:** 34\n- **Churned/Inactive (30+ days):** 18\n\n⚠️ **Urgent:** 12 memberships expire in the next 7 days, representing ~₹25,000 in potential lost revenue.\n\nWould you like me to execute the **Automated Renewal Reminder** workflow?`
+      },
+      {
+        pattern: /(book|schedule|court|slot|time|busy|peak)/i,
+        response: `📅 **Court Utilization & Bookings Engine**\n\n- **Total Bookings Today:** 48\n- **Current Utilization:** 78%\n- **Peak Hour Prediction:** 6:00 PM - 8:00 PM (95% booked)\n- **Slowest Hour:** 12:00 PM - 4:00 PM (25% booked)\n\n### Upcoming (Next 2 Hours):\n1. Court 1: Arjun Kumar (Confirmed)\n2. Court 2: Priya Singh (Confirmed)\n3. Court 1: Rahul Verma (Pending Payment)\n\n💡 **AI Recommendation:** You have 3 empty courts between 1 PM and 3 PM. Should I create a Flash Sale push notification?`
+      },
+      {
+        pattern: /(coach|train|instructor)/i,
+        response: `🏸 **Coach Performance Metrics**\n\n| Coach | Speciality | Rating | Active Students | Retention |\n|-------|------------|--------|-----------------|-----------|\n| Rajesh S. | Badminton | ⭐ 4.8 | 32 | 94% |\n| Meera N. | Swimming | ⭐ 4.9 | 28 | 98% |\n| Amit P. | Tennis | ⭐ 4.6 | 24 | 82% |\n\n🏆 **Top Performer:** Meera Nair has the highest retention rate this quarter.`
+      },
+      {
+        pattern: /(coupon|discount|promo|offer|campaign)/i,
+        response: `🎟️ **Marketing Campaign Manager**\n\nI have drafted a new promotional campaign based on your current low-utilization periods.\n\n⚠️ *This action requires your approval*\n\n- **Code:** SUMMER_SMASH_2026\n- **Discount:** 20% OFF\n- **Valid:** 12 PM - 4 PM (Weekdays)\n- **Target Audience:** Inactive members (30+ days)\n\nWould you like me to deploy this coupon and notify the targeted segment?`
+      },
+      {
+        pattern: /(attend|visit|check-in|qr)/i,
+        response: `📋 **Access Control & Check-in Logs**\n\n- **Today's QR Check-ins:** 120\n- **Peak Entry Time:** 6:15 AM (32 entries in 15 mins)\n- **Invalid Scans:** 2 (Expired passes)\n\nSystem Health: 🟢 RFID & QR Scanners are online and syncing perfectly with the central HobbyFi DB.`
+      },
+      {
+        pattern: /(pass|renew|membership plan)/i,
+        response: `🎫 **Subscription & Pass Management**\n\n| Member Name | Current Plan | Expiry Date | Status |\n|-------------|--------------|-------------|--------|\n| Arjun Kumar | Gold Monthly | Jul 10 | ⚠️ Expiring |\n| Priya Singh | Silver Monthly | Jul 11 | ⚠️ Expiring |\n| Rahul Verma | Gold Monthly | Jul 12 | ⚠️ Expiring |\n| Neha Gupta | Platinum | Jul 14 | ⚠️ Expiring |\n\n**Action Item:** Would you like me to draft personalized WhatsApp reminders for these members?`
+      },
+      {
+        pattern: /(swipe|match|buddy|social)/i,
+        response: `🤝 **HobbySwipe Matchmaking Engine**\n\nThe algorithm has identified several potential buddy matches for your academy based on skill level (NTRP/BWF) and preferred timings:\n\n1. **Rahul V. & Vikram J.** (Badminton, Intermediate, Morning) - *92% Match*\n2. **Priya S. & Neha G.** (Tennis, Beginner, Evening) - *88% Match*\n\nShall I send them a "Buddy Match Suggestion" push notification to encourage them to book a court together?`
+      },
+      {
+        pattern: /(group|community|club|chat)/i,
+        response: `💬 **Community Moderation & Engagement**\n\n- **Smash Badminton Club:** 84 active members (Highly Active)\n- **Indiranagar Footballers:** 112 active members (Moderately Active)\n- **Morning Yoga Circle:** 42 active members (Highly Active)\n\n💡 **AI Insight:** The "Smash Badminton Club" chat has been discussing a weekend tournament. You could capitalize on this by officially hosting a HobbyFi Mini-Tournament this Sunday.`
+      },
+      {
+        pattern: /(audit|log|security)/i,
+        response: `📋 **System Audit Logs & Security**\n\n| Timestamp | Action Type | Resource | Triggered By |\n|-----------|-------------|----------|--------------|\n| 10:45 AM | UPDATE | Membership | System (Auto-renew) |\n| 11:30 AM | CREATE | Booking | Arjun Kumar (App) |\n| 02:15 PM | CREATE | Coupon | Vendor Admin |\n\nAll operations are verified and securely logged in the HobbyFi ledger.`
+      }
+    ];
 
-    for (const [key, value] of Object.entries(responses)) {
-      if (msgLower.includes(key)) {
-        responseText = value;
+    let responseText = `I understand your query: "${message}"\n\nAs your **Advanced AI Copilot**, I am directly connected to the HobbyFi database. I can help you with:\n\n- 📊 **Financials:** Revenue trends and predictions.\n- 👥 **CRM:** Member retention and churn risk.\n- 📅 **Operations:** Court utilization and smart scheduling.\n- 🎟️ **Marketing:** AI-generated coupons and campaigns.\n- 🤝 **HobbySwipe:** Buddy matchmaking and community engagement.\n\n*Just ask me anything about your academy!*`;
+
+    for (const intent of intents) {
+      if (intent.pattern.test(msgLower)) {
+        responseText = intent.response;
         break;
       }
     }

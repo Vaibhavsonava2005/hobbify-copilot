@@ -39,6 +39,12 @@
     padding: 0;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-main);
@@ -64,7 +70,7 @@ body {
 .app-container {
     display: grid;
     grid-template-columns: 240px 1fr 380px;
-    height: 100vh;
+    height: 100%;
 }
 
 /* Sidebar */
@@ -316,7 +322,7 @@ nav {
     border-left: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
 }
 

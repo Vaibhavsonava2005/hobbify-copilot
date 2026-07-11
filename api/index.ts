@@ -60,19 +60,19 @@ function tryReadFile(filename: string): string | null {
 
 app.get('/', (c) => {
   const html = tryReadFile('index.html');
-  if (html) return c.html(html);
+  if (html) return new Response(html, { headers: { 'Content-Type': 'text/html', 'Cache-Control': 'no-cache, no-store, must-revalidate' } });
   return c.html('<html><body><h1>HobbyFi Copilot</h1><p>UI files not bundled. API is live at <a href="/api/health">/api/health</a></p></body></html>');
 });
 
 app.get('/style.css', (c) => {
   const css = tryReadFile('style.css');
-  if (css) return new Response(css, { headers: { 'Content-Type': 'text/css', 'Cache-Control': 'public, max-age=31536000' } });
+  if (css) return new Response(css, { headers: { 'Content-Type': 'text/css', 'Cache-Control': 'no-cache, no-store, must-revalidate' } });
   return c.text('', 404);
 });
 
 app.get('/app.js', (c) => {
   const js = tryReadFile('app.js');
-  if (js) return new Response(js, { headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'public, max-age=31536000' } });
+  if (js) return new Response(js, { headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'no-cache, no-store, must-revalidate' } });
   return c.text('', 404);
 });
 

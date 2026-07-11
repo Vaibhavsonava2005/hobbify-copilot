@@ -395,40 +395,48 @@ function switchView(viewName) {
         if (section.id === `view-${viewName}`) {
             section.classList.add('active');
             
-            // Framework-like suspense/loading state
-            const originalHTML = section.innerHTML;
-            section.innerHTML = `
-                <div style="display: flex; flex-direction: column; gap: 1rem; padding: 2rem; opacity: 0.5;">
+            // Framework-like suspense/loading state (Safe Implementation)
+            if (!section.querySelector('.suspense-loader')) {
+                const loader = document.createElement('div');
+                loader.className = 'suspense-loader';
+                loader.style.cssText = 'position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-main); z-index: 10; display: flex; flex-direction: column; gap: 1rem; padding: 2rem; opacity: 1; transition: opacity 0.2s;';
+                loader.innerHTML = `
                     <div style="height: 40px; width: 30%; background: var(--border-color); border-radius: 8px; animation: pulse 1.5s infinite;"></div>
                     <div style="height: 200px; width: 100%; background: var(--border-color); border-radius: 8px; animation: pulse 1.5s infinite;"></div>
-                </div>
-            `;
-            
-            setTimeout(() => {
-                section.innerHTML = originalHTML;
+                `;
+                section.style.position = 'relative';
+                section.appendChild(loader);
                 
-                // Refresh charts if entering Dashboard or Analytics views
-                if (viewName === 'dashboard') {
-                    renderMainCharts();
-                } else if (viewName === 'analytics') {
-                    renderAnalyticsCharts();
-                }
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.remove(), 200);
+                    
+                    // Refresh charts if entering Dashboard or Analytics views
+                    if (viewName === 'dashboard') {
+                        renderMainCharts();
+                    } else if (viewName === 'analytics') {
+                        renderAnalyticsCharts();
+                    }
 
-                // Populate data depending on view
-                switch(viewName) {
-                    case 'members': renderMembers(); break;
-                    case 'bookings': renderBookings(); break;
-                    case 'passes': renderPasses(); break;
-                    case 'courts': renderCourts(); break;
-                    case 'coaches': renderCoaches(); break;
-                    case 'community': renderCommunity(); break;
-                }
-                
-                lucide.createIcons({ root: section });
-            }, 300); // 300ms mock framework suspense
+                    // Populate data depending on view
+                    switch(viewName) {
+                        case 'members': renderMembers(); break;
+                        case 'bookings': renderBookings(); break;
+                        case 'passes': renderPasses(); break;
+                        case 'courts': renderCourts(); break;
+                        case 'coaches': renderCoaches(); break;
+                        case 'community': renderCommunity(); break;
+                    }
+                    
+                    lucide.createIcons({ root: section });
+                }, 300); // 300ms mock framework suspense
+            }
             
         } else {
             section.classList.remove('active');
+            // Remove any pending loaders
+            const loader = section.querySelector('.suspense-loader');
+            if (loader) loader.remove();
         }
     });
 }

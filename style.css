@@ -320,18 +320,23 @@ nav {
 .copilot-panel {
     background: var(--bg-card);
     border-left: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
+    position: relative;
     height: 100%;
-    overflow: hidden;
 }
 
 .copilot-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
     padding: 1.5rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--bg-card);
+    z-index: 5;
 }
 
 .copilot-title {
@@ -346,13 +351,30 @@ nav {
 }
 
 .chat-container {
-    flex: 1;
+    position: absolute;
+    top: 75px;
+    bottom: 85px;
+    left: 0;
+    right: 0;
     overflow-y: auto;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    min-height: 0;
+}
+
+.chat-input-form {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 85px;
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 0.75rem;
+    background: var(--bg-card);
+    z-index: 5;
 }
 
 .message {
@@ -414,14 +436,6 @@ nav {
 .suggestions button:hover {
     border-color: var(--primary);
     color: var(--primary);
-}
-
-.chat-input-form {
-    padding: 1.5rem;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    gap: 0.75rem;
-    background: var(--bg-card);
 }
 
 #chat-input {

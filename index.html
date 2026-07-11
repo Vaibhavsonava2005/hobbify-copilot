@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2026.2">
+    <link rel="stylesheet" href="style.css?v=2026.3">
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Add charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -321,10 +321,12 @@
                     <div class="avatar bg-green-light text-primary"><i data-lucide="bot"></i></div>
                     <div class="bubble">
                         <p>Hi there! I am your HobbyFi Copilot powered by Mastra. How can I assist you with your academy today?</p>
-                        <div class="suggestions">
-                            <button onclick="fillPrompt('Show me today\'s revenue summary')">Revenue Summary</button>
-                            <button onclick="fillPrompt('Which members have passes expiring this week?')">Expiring Passes</button>
-                            <button onclick="fillPrompt('Create a 20% discount coupon for Summer Fest')">Create Coupon</button>
+                        <div class="suggestions" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                            <button onclick="fillPrompt('Track customer status')">Track Customer Status</button>
+                            <button onclick="fillPrompt('Give menu summary')">Menu Summary</button>
+                            <button onclick="fillPrompt('Expiring passes')">Expiring Passes</button>
+                            <button onclick="fillPrompt('Create coupon')">Create Coupon</button>
+                            <button onclick="fillPrompt('Show newly members added')">Newly Members Added</button>
                         </div>
                     </div>
                 </div>
@@ -360,7 +362,7 @@
         </div>
     </template>
 
-    <script src="app.js?v=2026.2"></script>
+    <script src="app.js?v=2026.3"></script>
     <script>
         lucide.createIcons();
     </script>

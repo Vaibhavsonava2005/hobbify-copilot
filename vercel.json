@@ -1,13 +1,19 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "echo skip",
+  "buildCommand": null,
+  "outputDirectory": ".",
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "destination": "/api/index.ts"
     }
   ],
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "{index.html,style.css,app.js}"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",

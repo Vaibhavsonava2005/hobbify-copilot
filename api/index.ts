@@ -179,6 +179,14 @@ app.post('/api/copilot/chat', async (c) => {
       {
         pattern: /(audit|log|security)/i,
         response: `📋 **System Audit Logs & Security**\n\n| Timestamp | Action Type | Resource | Triggered By |\n|-----------|-------------|----------|--------------|\n| 10:45 AM | UPDATE | Membership | System (Auto-renew) |\n| 11:30 AM | CREATE | Booking | Arjun Kumar (App) |\n| 02:15 PM | CREATE | Coupon | Vendor Admin |\n\nAll operations are verified and securely logged in the HobbyFi ledger.`
+      },
+      {
+        pattern: /(hobbyfi|about|platform|help|support|what is|how to)/i,
+        response: `🌐 **HobbyFi Knowledge Base**\n\nHobbyFi is the ultimate sports & fitness ecosystem connecting players, vendors, and coaches!\n\n**Key Features for Vendors:**\n1. **Smart Booking:** Automated slot management.\n2. **HobbySwipe:** Matchmaking players to fill empty slots.\n3. **Community Hub:** Integrated groups to build loyalty.\n4. **AI Copilot:** Your very own assistant to manage operations (that's me!).\n\nNeed technical support? Contact vendor-support@hobbyfi.com.`
+      },
+      {
+        pattern: /(status|track|report)/i,
+        response: `📈 **Customer & Venue Status Report**\n\n- **Live Occupancy:** 32 members currently inside.\n- **Venue Health:** All 6 courts are operational.\n- **Recent Feedback:** ⭐ 4.8 average rating this week.\n- **Pending Approvals:** 2 new membership requests require your attention.\n\nEverything is running smoothly! Keep up the great work.`
       }
     ];
 

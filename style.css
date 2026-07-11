@@ -70,7 +70,10 @@ body {
 .app-container {
     display: grid;
     grid-template-columns: 240px 1fr 380px;
-    height: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
 /* Sidebar */
@@ -141,6 +144,8 @@ nav {
     padding: 2rem;
     overflow-y: auto;
     min-width: 0;
+    height: 100%;
+    position: relative;
 }
 
 .top-nav {

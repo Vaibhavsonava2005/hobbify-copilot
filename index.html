@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2026.3">
+    <link rel="stylesheet" href="style.css?v=2026.4">
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Add charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -45,9 +45,10 @@
         <main class="main-content" id="main-scroll-container">
             <header class="top-nav">
                 <h2 id="view-title">Overview Dashboard</h2>
-                <div class="actions">
+                <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 0.75rem; background: var(--primary); color: white; padding: 2px 8px; border-radius: 12px; font-weight: 600;">v4.0 Live</span>
                     <button class="btn-icon" id="theme-toggle" title="Toggle Dark/Light Mode"><i data-lucide="moon"></i></button>
-                    <button class="btn-icon" title="Notifications"><i data-lucide="bell"></i></button>
+                    <button class="btn-icon"><i data-lucide="bell"></i></button>
                     <button class="btn-primary" id="quick-action-btn"><i data-lucide="plus"></i> Quick Action</button>
                 </div>
             </header>
@@ -362,7 +363,7 @@
         </div>
     </template>
 
-    <script src="app.js?v=2026.3"></script>
+    <script src="app.js?v=2026.4"></script>
     <script>
         lucide.createIcons();
     </script>

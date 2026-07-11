@@ -7,5 +7,16 @@
       "source": "/api/(.*)",
       "destination": "/api/index.ts"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=0, stale-while-revalidate=0"
+        }
+      ]
+    }
   ]
 }

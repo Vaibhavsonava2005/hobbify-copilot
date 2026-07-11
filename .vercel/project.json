@@ -1,16 +1,1 @@
-{
-  "projectId": "prj_l05VqirNohCJzNgrWz8bnf93pfwN",
-  "orgId": "team_Stz60X09UUksoGWjVBJYe9sp",
-  "projectName": "hobbyfi-copilot",
-  "settings": {
-    "createdAt": 1783489449006,
-    "framework": "hono",
-    "devCommand": null,
-    "installCommand": null,
-    "buildCommand": null,
-    "outputDirectory": null,
-    "rootDirectory": null,
-    "directoryListing": false,
-    "nodeVersion": "24.x"
-  }
-}
+{"projectId":"prj_X2zzxZn6xsmYZDrNUrOTfEj93xue","orgId":"team_Stz60X09UUksoGWjVBJYe9sp","projectName":"hobbyfi-copilot-v4-production"}

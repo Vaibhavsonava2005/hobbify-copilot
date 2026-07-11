@@ -63,7 +63,7 @@ body {
 /* Layout */
 .app-container {
     display: grid;
-    grid-template-columns: 240px 1fr 480px;
+    grid-template-columns: 240px 1fr 380px;
     height: 100vh;
 }
 
@@ -188,7 +188,7 @@ nav {
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
 }
 
@@ -240,7 +240,7 @@ nav {
 
 .main-split-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 1.5rem;
 }
 
